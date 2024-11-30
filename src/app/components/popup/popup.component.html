@@ -3,9 +3,6 @@
 <nc-search-form
   class="search-form"
   [disabled]="!hasData"
-  (activated)="navigate('search')"
-  (canceled)="navigate('main')"
-  (blur)="onBlur()" />
-<div class="content" [@routeAnimations]="urlChanges$ | async">
-  <router-outlet />
-</div>
+  [source]="searchSource$ | async"
+  (findItem)="findItem($event)" />
+<nc-popup-content />

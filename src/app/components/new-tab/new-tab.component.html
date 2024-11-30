@@ -1,17 +1,13 @@
 @let hideTopSites = hideTopSites$ | async;
+@let hasData = hasData$ | async;
 
 @if (hideTopSites === false) {
   <nc-top-sites class="top-sites" [topSites]="topSites$ | async" />
 }
 
-@let hasData = hasData$ | async;
-
 <nc-search-form
   class="search-form"
-  [disabled]="!hasData"
-  (activated)="navigate('search')"
-  (canceled)="navigate('main')"
-  (blur)="onBlur()" />
-<section class="content" [@routeAnimations]="urlChanges$ | async">
-  <router-outlet />
-</section>
+  [source]="searchSource$ | async"
+  [devices]="devices$ | async"
+  [disabled]="!hasData" />
+<nc-new-tab-content />

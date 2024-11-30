@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { map, Observable, shareReplay } from 'rxjs';
 
-import { KeyListenerDirective } from '../../directives';
-import { KeyService, NavService, TabService } from '../../services';
-import { routeAnimations, scrollTop } from '../../utils';
+import { NavService, TabService } from '../../services';
+import { BrowserTab, BrowserTabs } from '../../utils';
+import { PopupContentComponent } from '../popup-content/popup-content.component';
 import { SearchFormComponent } from '../search-form/search-form.component';
 
 /**
@@ -19,30 +18,36 @@ import { SearchFormComponent } from '../search-form/search-form.component';
   styleUrl: './popup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  animations: [routeAnimations],
-  imports: [CommonModule, RouterOutlet, SearchFormComponent],
-  providers: [KeyService],
+  imports: [AsyncPipe, SearchFormComponent, PopupContentComponent],
 })
-export class PopupComponent extends KeyListenerDirective {
+export class PopupComponent {
   readonly urlChanges$ = this.navService.pathChanges$.pipe(shareReplay(1));
   readonly hasData$: Observable<boolean> = this.tabService.groupsTimeline$.pipe(
     map((timeline) => timeline?.length > 0),
     shareReplay(1)
   );
 
+  readonly searchSource$: Observable<BrowserTabs> = this.tabService.tabs$;
+
   constructor(
     private readonly navService: NavService,
     private readonly tabService: TabService
-  ) {
-    super();
-  }
+  ) {}
 
-  async navigate(...commands: string[]) {
-    await this.navService.navigate(['/popup', ...commands]);
-    scrollTop();
-  }
+  /**
+   * Scroll specified tab into view
+   */
+  async findItem(tab: BrowserTab) {
+    const group = await this.tabService.getGroupByTab(tab);
 
-  onBlur() {
-    this.clearActive();
+    if (group) {
+      await this.navService.navigate(['/popup'], {
+        queryParams: {
+          groupId: group.id,
+          tabId: tab.id,
+          query: undefined,
+        },
+      });
+    }
   }
 }

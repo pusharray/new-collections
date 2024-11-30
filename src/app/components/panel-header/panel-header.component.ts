@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -17,14 +17,7 @@ import { IconsContainerComponent } from '../icons-container/icons-container.comp
   styleUrl: './panel-header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  imports: [
-    CommonModule,
-    IconsContainerComponent,
-    MatIconModule,
-    MatTooltipModule,
-    StopPropagationDirective,
-    TranslatePipe,
-  ],
+  imports: [IconsContainerComponent, MatIconModule, MatTooltipModule, NgClass, StopPropagationDirective, TranslatePipe],
 })
 export class PanelHeaderComponent {
   /**

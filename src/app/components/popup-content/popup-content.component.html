@@ -1,4 +1,5 @@
 @let groupsTimeline = groupsTimeline$ | async;
+
 @if (groupsTimeline) {
   @for (item of groupsTimeline; track item.label) {
     <nc-timeline-element
@@ -9,6 +10,6 @@
   }
 } @else {
   <nc-empty
-    [actions]="defaultActions"
+    [actions]="noDataActions"
     [message]="'popupEmptyMessage' | translate" />
 }

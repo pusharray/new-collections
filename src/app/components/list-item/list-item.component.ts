@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -48,7 +47,6 @@ import { RippleComponent } from '../ripple/ripple.component';
   },
   imports: [
     ChipComponent,
-    CommonModule,
     FaviconPipe,
     MatButtonModule,
     MatIconModule,

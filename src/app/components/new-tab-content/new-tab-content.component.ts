@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { TranslatePipe } from '../../pipes';
@@ -19,10 +19,12 @@ import { TimelineElementComponent } from '../timeline-element/timeline-element.c
   templateUrl: './new-tab-content.component.html',
   styleUrls: ['./new-tab-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, EmptyComponent, GroupsComponent, TimelineElementComponent, TranslatePipe],
+  imports: [AsyncPipe, EmptyComponent, GroupsComponent, TimelineElementComponent, TranslatePipe],
 })
 export class NewTabContentComponent {
-  readonly defaultActions: CollectionActions = [
+  readonly tabActions: Actions = [Action.Edit, Action.Delete];
+
+  readonly noDataActions: CollectionActions = [
     {
       action: Action.Import,
       icon: ActionIcon.Import,
@@ -31,20 +33,14 @@ export class NewTabContentComponent {
     },
   ];
 
-  readonly devicesTimeline$: Observable<Timeline>;
-  readonly hasAnyData$: Observable<boolean>;
-  readonly timeline$: Observable<Timeline>;
-
-  readonly tabActions: Actions = [Action.Edit, Action.Delete];
+  readonly devicesTimeline$: Observable<Timeline> = this.homeService.devicesTimeline$;
+  readonly hasAnyData$: Observable<boolean> = this.homeService.hasAnyData$;
+  readonly timeline$: Observable<Timeline> = this.homeService.timeline$;
 
   constructor(
-    homeService: HomeService,
-    private tabService: TabService
-  ) {
-    this.devicesTimeline$ = homeService.devicesTimeline$;
-    this.hasAnyData$ = homeService.hasAnyData$;
-    this.timeline$ = homeService.timeline$;
-  }
+    private readonly homeService: HomeService,
+    private readonly tabService: TabService
+  ) {}
 
   /**`
    * Removes all items in timeline section
