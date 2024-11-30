@@ -1,5 +1,0 @@
-@use 'common' as common;
-
-:host {
-  @include common.vertical-flex;
-}

@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDividerModule } from '@angular/material/divider';
@@ -38,7 +38,7 @@ import { RippleComponent } from '../ripple/ripple.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [listItemAnimation],
   imports: [
-    CommonModule,
+    AsyncPipe,
     CdkDrag,
     CdkDropList,
     GroupControlsComponent,

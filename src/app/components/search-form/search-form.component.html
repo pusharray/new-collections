@@ -1,3 +1,9 @@
+@let sourceTabs = sourceTabs$ | async;
+@let deviceTabs = deviceTabs$ | async;
+@let searchQuery = searchQuery$ | async;
+@let recentTabs = recentTabs$ | async;
+@let baseSource = source();
+
 <section class="controls-wrapper">
   <form class="search-form" [formGroup]="formGroup">
     <mat-form-field class="search-field" appearance="fill">
@@ -7,29 +13,36 @@
         type="text"
         matInput
         formControlName="search"
-        (focus)="focused$.next(true)"
-        (blur)="onBlur()"
         autocomplete="off" />
+
+      <ul cdkListbox class="example-listbox">
+        @for (tab of sourceTabs; track tab) {
+          <li [cdkOption]="tab" class="example-option">{{ tab.title }}</li>
+        }
+      </ul>
     </mat-form-field>
   </form>
 
   <div class="controls">
-    @if (isActive$ | async) {
-      <button
-        mat-icon-button
-        color="primary"
-        [matTooltip]="'cancelSearch' | translate"
-        (click)="clearSearch()">
-        <mat-icon>close</mat-icon>
-      </button>
-    } @else {
-      <button
-        mat-icon-button
-        color="primary"
-        [matTooltip]="'addCollection' | translate"
-        (click)="handleAction(Action.Save)">
-        <mat-icon>add</mat-icon>
-      </button>
-    }
+    <!-- @switch (auto.isOpen) {
+      @case (true) {
+        <button
+          mat-icon-button
+          color="primary"
+          [matTooltip]="'cancelSearch' | translate"
+          (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+      @case (false) {
+        <button
+          mat-icon-button
+          color="primary"
+          [matTooltip]="'addCollection' | translate"
+          (click)="handleAction(Action.Save)">
+          <mat-icon>add</mat-icon>
+        </button>
+      }
+    } -->
   </div>
 </section>

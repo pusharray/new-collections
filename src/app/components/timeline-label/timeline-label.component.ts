@@ -1,9 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nc-timeline-label',
-  imports: [CommonModule],
   templateUrl: './timeline-label.component.html',
   styleUrl: './timeline-label.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
